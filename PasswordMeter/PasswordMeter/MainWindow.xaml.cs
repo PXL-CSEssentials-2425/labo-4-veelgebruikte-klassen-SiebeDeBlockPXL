@@ -32,7 +32,92 @@ namespace PasswordMeter
 
         private void passwordMeterButton_Click(object sender, RoutedEventArgs e)
         {
+            string inputUsername = userNameTextBox.Text.Trim();
+            string inputPassword = passwordTextBox.Text.Trim();
 
+            int passwordStrength = 0;
+
+            if (string.IsNullOrEmpty(inputUsername) || string.IsNullOrEmpty(inputPassword)) 
+            {
+                resultTextBlock.Text = "Please enter a username and password";
+                return;
+            }
+
+            if (!inputPassword.Contains(inputUsername))
+            {
+                passwordStrength++;
+            }
+
+            if (inputPassword.Length >= 10)
+            {
+                passwordStrength++;
+            }
+
+            bool hasDigit = false;
+            bool hasUpper = false;
+            bool hasLower = false;
+
+            foreach (char c in inputPassword.ToCharArray())
+            {
+                if(char.IsDigit(c))
+                {
+                    hasDigit = true;
+                }
+
+                if(char.IsUpper(c))
+                {
+                    hasUpper = true;
+                }
+
+                if(char.IsLower(c))
+                {
+                    hasLower = true;
+                }
+            }
+
+            if (hasDigit)
+            {
+                passwordStrength++;
+            }
+
+            if (hasUpper)
+            {
+                passwordStrength++;
+            }
+
+            if (hasLower)
+            {
+                passwordStrength++;
+            }
+
+            //if (passwordStrength == 5)
+            //{
+            //    resultTextBlock.Text = "Strong password";
+            //}
+            //else if (passwordStrength == 4)
+            //{
+            //    resultTextBlock.Text = "Medium password";
+            //}
+            //else
+            //{
+            //    resultTextBlock.Text = "Weak password";
+            //}
+
+            switch(passwordStrength)
+            {
+                case 5:
+                    resultTextBlock.Text = "Strong password";
+                    resultTextBlock.Foreground = Brushes.Green;
+                    break;
+                case 4:
+                    resultTextBlock.Text = "Medium password";
+                    resultTextBlock.Foreground = Brushes.Orange;
+                    break;
+                default:
+                    resultTextBlock.Text = "Weak password";
+                    resultTextBlock.Foreground = Brushes.Red;
+                    break;
+            }
         }
     }
 }
