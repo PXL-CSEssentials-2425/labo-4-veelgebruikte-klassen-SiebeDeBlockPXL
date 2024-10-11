@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -117,6 +118,56 @@ namespace PasswordMeter
                     resultTextBlock.Text = "Weak password";
                     resultTextBlock.Foreground = Brushes.Red;
                     break;
+            }
+
+            Random rnd = new Random();
+            StringBuilder passwordBuilder = new StringBuilder();
+
+            // 5 letters from username:
+            for (int i = 0; i < 5; i++)
+            {
+                int randomPosition = rnd.Next(0, inputUsername.Length);
+                string randomChar = inputUsername.Substring(randomPosition, 1);
+
+                passwordBuilder.Append(randomChar.ToLower());
+            }
+
+            // 5 random digits
+            for (int i = 0; i < 5; i++)
+            {
+                int randomNumber = rnd.Next(0, 10);
+                passwordBuilder.Append(randomNumber);
+            }
+
+            // 2 letters from username
+            for (int i = 0; i < 2; i++)
+            {
+                int randomPosition = rnd.Next(0, inputUsername.Length);
+                string randomChar = inputUsername.Substring(randomPosition, 1);
+
+                passwordBuilder.Append(randomChar.ToUpper());
+            }
+
+            // random number of exclamation marks
+            for (int i = 0; i < rnd.Next(1, 6); i++)
+            {
+                passwordBuilder.Append("!");
+            }
+
+            // resultTextBlock.Text = passwordBuilder.ToString();
+
+            MessageBoxResult result = MessageBox.Show("Gegenereerde wachtwoord", "Zwak wachtwoord", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if(result == MessageBoxResult.Yes)
+            {
+                passwordTextBox.Text = passwordBuilder.ToString();
+            }
+
+            string input = Interaction.InputBox("Type close to exit, Afsluiten", "close");
+
+            if (input.Equals("close", StringComparison.CurrentCultureIgnoreCase))
+            {
+                this.Close();
             }
         }
     }
